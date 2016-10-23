@@ -13,21 +13,6 @@ class Container
 
     public function get($serviceName)
     {
-        $this->config = [
-            'logger' => [
-                'class' => 'Logger',
-            ],
-            'manager' => [
-                'class' => 'Manager',
-                'collaborators' => [
-                    'logger'
-                ],
-            ],
-            'engine' => [
-                'class' => 'Engine',
-            ],
-        ];
-
         $service = new $this->config[$serviceName]['class']();
 
         if (isset($this->config[$serviceName]['collaborators'])) {
