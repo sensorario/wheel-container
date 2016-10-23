@@ -19,5 +19,7 @@
     "config": {
         "bin-dir": "bin"
     },
-    "require": {}
+    "require": {
+        "phpunit/phpunit": "^5.6"
+    }
 }
