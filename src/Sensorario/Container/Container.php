@@ -13,6 +13,12 @@ class Container
 
     public function get($serviceName)
     {
+        if (!isset($this->config[$serviceName]['class'])) {
+            throw new \RuntimeException(
+                'Undefined Service!'
+            );
+        }
+
         $service = new $this->config[$serviceName]['class']();
 
         if (isset($this->config[$serviceName]['collaborators'])) {
