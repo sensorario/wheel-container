@@ -6,6 +6,8 @@ class Container
 {
     private $config;
 
+    private $services;
+
     public function setConfiguration(array $config)
     {
         $this->config = $config;
@@ -15,21 +17,23 @@ class Container
     {
         if (!isset($this->config[$serviceName]['class'])) {
             throw new \RuntimeException(
-                'Undefined Service!'
+                'Undefined Service '.$serviceName.'!'
             );
         }
 
-        $service = new $this->config[$serviceName]['class']();
+        if (!isset($this->services[$serviceName])) {
+            $this->services[$serviceName] = new $this->config[$serviceName]['class']();
 
-        if (isset($this->config[$serviceName]['collaborators'])) {
-            foreach ($this->config[$serviceName]['collaborators'] as $collaborator) {
-                $service->addService(
-                    $collaborator,
-                    $this->get($collaborator)
-                );
+            if (isset($this->config[$serviceName]['collaborators'])) {
+                foreach ($this->config[$serviceName]['collaborators'] as $collaborator) {
+                    $this->services[$serviceName]->addService(
+                        $collaborator,
+                        $this->get($collaborator)
+                    );
+                }
             }
         }
 
-        return $service;
+        return $this->services[$serviceName];
     }
 }
